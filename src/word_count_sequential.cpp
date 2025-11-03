@@ -36,8 +36,9 @@ int main() {
     // Print total time and total words to verify same workload
     cout << "Time: " << duration.count() << " seconds." << endl;
     cout << "Total words processed: " << totalWords << endl;
+    //// For Debugging
+    //// Print first few word counts to check correctness
 
-    // Print first few word counts to check correctness
     // int printed = 0;
     // for (const auto &entry : wordCount) {
     //     if (printed >= 25) break;

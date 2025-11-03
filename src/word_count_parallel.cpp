@@ -8,7 +8,7 @@
 using namespace std;
 
 int main() {
-    ifstream file("sample.txt");  // Open the text file
+    ifstream file("sample.txt");  
     string word;
     unordered_map<string, int> wordCount;
 
@@ -21,7 +21,7 @@ int main() {
 
         // Parallelize the loop to process words
         #pragma omp for
-        for (int i = 0; i < 1000000; i++) { // Adjust based on word array logic
+        for (int i = 0; i < 1000000; i++) { 
             localCount[word]++;
         }
 
@@ -39,7 +39,7 @@ int main() {
     chrono::duration<double> duration = end - start;
     cout << "Time: " << duration.count() << " seconds." << endl;
 
-    // Output the word counts
+    // Print the word counts
     for (const auto& entry : wordCount) {
         cout << entry.first << ": " << entry.second << endl;
     }
