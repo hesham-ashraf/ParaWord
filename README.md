@@ -81,15 +81,3 @@ Below is an example of benchmark results from running both the sequential and pa
 - Assumes a Linux environment with `g++` installed.
 - Assumes the parallel implementation uses pthreads; adjust build flags if it uses another threading method.
 
-## Suggested next steps
-
-- Add a small `run_benchmarks.sh` to automate runs with different thread counts and produce a CSV for plotting.
-- Add a short `README` section showing expected CLI for each binary if the programs support `--help` or `-h`.
-
-## License
-
-This repository is provided under the MIT License — add a `LICENSE` file if desired.
-
-## Contact
-
-For questions or contributions, open an issue or contact the maintainer.
