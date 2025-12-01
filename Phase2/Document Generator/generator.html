@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Phase 2 Report – MPI-Based Distributed Word Count</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 2cm;
+            line-height: 1.5;
+            color: #222;
+        }
+        
+        h1,
+        h2,
+        h3 {
+            color: #1a4b7a;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 0.2cm;
+        }
+        
+        h1+p {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.5cm;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .section {
+            margin-bottom: 1.5cm;
+            page-break-inside: avoid;
+        }
+        
+        .subsection {
+            margin-top: 0.3cm;
+        }
+        
+        figure {
+            margin: 0.5cm auto;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        
+        figure img {
+            max-width: 90%;
+            height: auto;
+            border: 1px solid #ccc;
+            padding: 4px;
+            background: #fafafa;
+        }
+        
+        figure figcaption {
+            font-size: 0.85rem;
+            color: #555;
+            margin-top: 0.2cm;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5cm 0;
+            font-size: 0.9rem;
+        }
+        
+        table,
+        th,
+        td {
+            border: 1px solid #aaa;
+        }
+        
+        th,
+        td {
+            padding: 0.2cm 0.3cm;
+            text-align: center;
+        }
+        
+        .code {
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.9rem;
+            background: #f4f4f4;
+            padding: 0.3cm;
+            border-left: 3px solid #1a4b7a;
+            margin: 0.3cm 0;
+            white-space: pre-wrap;
+        }
+        
+        .bullet-list {
+            margin-left: 0.6cm;
+        }
+        
+        .bullet-list li {
+            margin-bottom: 0.15cm;
+        }
+        
+        @page {
+            margin: 2cm;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Phase 2 Report – MPI-Based Distributed Word Count</h1>
+    <p>SW401 – Parallel and Distributed Systems &nbsp;|&nbsp; Phase 2 – Distributed Parallelism with MPI</p>
+
+    <div class="section">
+        <h2>1. Introduction</h2>
+        <p>
+            This report describes Phase 2 of the <strong>ParaWord</strong> project, which extends a Phase 1 shared-memory word count application (OpenMP) into a <strong>distributed-memory MPI program</strong>. The original application counts the number
+            of words in a large text file and measures performance. In Phase 2, the goal is to transform this design into a distributed parallel implementation using MPI, implement domain decomposition, use non-blocking communication to overlap computation
+            and communication, and evaluate strong and weak scaling as well as network latency and bandwidth.
+        </p>
+        <p>
+            In the MPI version, the input file is partitioned into contiguous blocks that are processed by multiple MPI ranks. Each rank counts word starts in its local block, while a halo exchange handles word boundaries that are split across ranks. The results
+            are then combined using MPI collectives.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>2. Design of Decomposition</h2>
+
+        <div class="subsection">
+            <h3>2.1 Global Problem Definition</h3>
+            <p>
+                The global problem is to count the number of words in a text file <code>sample2.txt</code>. The file is read as a <strong>sequence of bytes</strong> of total length <code>N</code>. A word is defined as a maximal sequence of non-whitespace
+                characters, where whitespace includes space, tab, newline, carriage return, and form feed.
+            </p>
+        </div>
+
+        <div class="subsection">
+            <h3>2.2 1D Block Decomposition</h3>
+            <p>
+                We use a 1D block decomposition over the file bytes. Let <code>p</code> be the number of MPI ranks. We compute:
+            </p>
+            <div class="code">
+                base = N / p rem = N % p // rank r local_N = base + (r &lt; rem ? 1 : 0); start = r * base + (r &lt; rem ? r : rem);
+            </div>
+            <p>
+                Ranks <code>0 … rem−1</code> receive <code>base+1</code> bytes, and the remaining ranks receive
+                <code>base</code> bytes. The <code>start</code> index identifies the first byte of the global file
