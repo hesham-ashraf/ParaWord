@@ -47,6 +47,10 @@ A comprehensive parallel and distributed word counting system demonstrating shar
 
 ---
 
+**Production Ready Videos:** https://drive.google.com/drive/folders/1TXETZCJXt4zyBx62YKSaOLabXyaR7THV?usp=sharing
+
+---
+
 ## 🏗️ Architecture Evolution
 
 ### Phase 1: Shared Memory
@@ -699,3 +703,4 @@ This project demonstrates mastery of:
 ---
 
 **Status:** ✅ Production Ready 
+
