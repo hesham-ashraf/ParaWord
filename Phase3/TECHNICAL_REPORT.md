@@ -1,10 +1,8 @@
 # Phase 3 Technical Report: Resilience & High-Availability Integration
 
-**Course:** Parallel Computing  
 **Project:** ParaWord - Distributed Word Counter  
 **Phase:** 3 - Fault Tolerance and Resilience  
-**Date:** December 2025  
-**Author:** Ahmed Sameh , Hesham Ashraf
+**Author:** Ahmed Sameh, Hesham Ashraf
 
 ---
 
@@ -18,8 +16,7 @@
 6. [Performance Analysis](#6-performance-analysis)
 7. [Bonus Feature: Spark Streaming + gRPC](#7-bonus-feature-spark-streaming--grpc)
 8. [Conclusions & Lessons Learned](#8-conclusions--lessons-learned)
-9. [Future Improvements](#9-future-improvements)
-10. [References & Appendices](#10-references--appendices)
+9. [References & Appendices](#10-references--appendices)
 
 ---
 
@@ -952,156 +949,9 @@ Implemented a modern streaming architecture using:
 
 ---
 
-## 9. Future Improvements
+## 9. References & Appendices
 
-### 9.1 Short-Term Improvements (1-2 weeks)
-
-#### 9.1.1 Enhanced Failure Handling
-
-**Current Limitation:** Multiple concurrent failures cause issues
-
-**Proposed Solution:**
-- Implement hierarchical failure recovery
-- Add backup master (master failover)
-- Use Raft or Paxos consensus for coordination
-
-**Impact:** Handle up to 30% worker failures reliably
-
-#### 9.1.2 Adaptive Checkpointing
-
-**Current Limitation:** Fixed checkpoint interval
-
-**Proposed Solution:**
-```cpp
-// Checkpoint based on cost-benefit analysis
-double checkpoint_cost = estimated_checkpoint_time();
-double work_at_risk = time_since_last_checkpoint() * throughput;
-double expected_loss = work_at_risk * failure_probability;
-
-if (expected_loss > checkpoint_cost * 2) {
-    saveCheckpoint();
-}
-```
-
-**Impact:** Reduce checkpoint overhead while maintaining protection
-
-#### 9.1.3 Better Load Balancing
-
-**Current Limitation:** Static work division
-
-**Proposed Solution:**
-- Dynamic work stealing
-- Worker-initiated work requests
-- Adaptive chunk sizing based on performance
-
-**Impact:** Better utilization, especially after failures
-
-### 9.2 Medium-Term Improvements (1-2 months)
-
-#### 9.2.1 Asynchronous Checkpointing
-
-**Approach:**
-- Spawn background thread for checkpoint writing
-- Continue computation while checkpoint saves
-- Use copy-on-write for consistency
-
-**Benefits:**
-- Zero computational overhead
-- Better CPU utilization
-- Larger checkpoints feasible
-
-#### 9.2.2 Incremental Checkpoints
-
-**Approach:**
-- Track which words are new/changed since last checkpoint
-- Only save delta (changes)
-- Reconstruct full state by applying deltas
-
-**Benefits:**
-- Smaller checkpoint files
-- Faster I/O
-- Less disk space
-
-#### 9.2.3 Distributed Checkpoint Storage
-
-**Approach:**
-- Use distributed filesystem (HDFS, Ceph)
-- Replicate checkpoints across nodes
-- Enable faster recovery
-
-**Benefits:**
-- No single point of failure
-- Better scalability
-- Fault tolerance for checkpoint system itself
-
-### 9.3 Long-Term Improvements (3-6 months)
-
-#### 9.3.1 Full Spark Integration
-
-**Goal:** Combine MPI efficiency with Spark ecosystem
-
-**Approach:**
-- Wrap MPI code as Spark UDF
-- Use Spark for orchestration
-- Leverage Spark's built-in fault tolerance
-
-**Benefits:**
-- Access to Spark SQL, MLlib, etc.
-- Better ecosystem integration
-- Production deployment tools
-
-#### 9.3.2 Machine Learning Integration
-
-**Goal:** Use ML to optimize fault tolerance
-
-**Approach:**
-- Predict failure probability per node
-- Adjust checkpoint frequency dynamically
-- Preemptive work redistribution
-
-**Benefits:**
-- Proactive failure handling
-- Optimized checkpoint overhead
-- Better resource utilization
-
-#### 9.3.3 Container Orchestration (Kubernetes)
-
-**Goal:** Deploy on modern cloud infrastructure
-
-**Approach:**
-- Containerize with Docker
-- Deploy on Kubernetes
-- Use persistent volumes for checkpoints
-
-**Benefits:**
-- Cloud-native deployment
-- Auto-scaling
-- Modern DevOps practices
-
-### 9.4 Research Directions
-
-**Interesting Problems:**
-
-1. **Optimal Checkpoint Frequency**
-   - Mathematical modeling
-   - Trade-off analysis
-   - Adaptive algorithms
-
-2. **Byzantine Fault Tolerance**
-   - Handle malicious/corrupted workers
-   - Verify results cryptographically
-   - Consensus mechanisms
-
-3. **Energy-Aware Checkpointing**
-   - Minimize energy consumption
-   - Consider I/O power costs
-   - Green computing
-
----
-
-## 10. References & Appendices
-
-### 10.1 References
+### 9.1 References
 
 **Academic Papers:**
 1. Chandy, K. M., & Lamport, L. (1985). "Distributed snapshots: Determining global states of distributed systems"
@@ -1117,7 +967,7 @@ if (expected_loss > checkpoint_cost * 2) {
 7. gRPC Documentation: https://grpc.io/docs/
 8. Protocol Buffers: https://developers.google.com/protocol-buffers
 
-### 10.2 Appendix A: Code Statistics
+### 9.2 Appendix A: Code Statistics
 
 **Lines of Code:**
 
@@ -1139,7 +989,7 @@ if (expected_loss > checkpoint_cost * 2) {
 | Max Function Length | 180 lines (master_process) |
 | Comment Density | 35% |
 
-### 10.3 Appendix B: Test Results Summary
+### 9.3 Appendix B: Test Results Summary
 
 **Checkpoint Overhead Tests:**
 - Total runs: 10 (5 baseline + 5 with checkpoints)
@@ -1163,7 +1013,7 @@ if (expected_loss > checkpoint_cost * 2) {
 - Success rate: 80%
 - Peak throughput: 898,891 words/sec
 
-### 10.4 Appendix C: File Structure
+### 9.4 Appendix C: File Structure
 
 ```
 Phase3/
@@ -1199,7 +1049,7 @@ Phase3/
     └── requirements.txt
 ```
 
-### 10.5 Appendix D: Configuration Reference
+### 9.5 Appendix D: Configuration Reference
 
 **Compile Command:**
 ```bash
