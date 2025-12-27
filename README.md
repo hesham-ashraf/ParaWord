@@ -698,7 +698,6 @@ This project demonstrates mastery of:
 - [Phase 3 Documentation](Phase3/README.md)
 - [Technical Report](Phase3/TECHNICAL_REPORT.md)
 - [Bonus Feature](Phase3/bonus_streaming/README.md)
-- [Requirements Verification](Phase3/REQUIREMENTS_VERIFICATION.md)
 
 ---
 
