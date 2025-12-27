@@ -1,0 +1,13 @@
+# Phase 3 Bonus: Spark Streaming + gRPC Integration
+# Python dependencies
+
+# gRPC and Protocol Buffers
+grpcio==1.60.0
+grpcio-tools==1.60.0
+protobuf==4.25.1
+
+# Spark
+pyspark==3.5.0
+
+# Utilities
+python-dateutil==2.8.2

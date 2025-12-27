@@ -1,0 +1,50 @@
+// gRPC Service Definition for Word Counting
+// Phase 3 Bonus: Spark Structured Streaming Integration
+
+syntax = "proto3";
+
+package wordcount;
+
+// Word counting service
+service WordCountService {
+  // Process a text chunk and return word counts
+  rpc CountWords(TextChunk) returns (WordCountResult);
+  
+  // Process stream of text chunks (for batch processing)
+  rpc CountWordsStream(stream TextChunk) returns (WordCountResult);
+  
+  // Get service health status
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}
+
+// Request message containing text to process
+message TextChunk {
+  string chunk_id = 1;          // Unique identifier for this chunk
+  string text = 2;              // Text content to process
+  int64 timestamp = 3;          // Timestamp when chunk was created
+  int32 batch_id = 4;           // Micro-batch identifier
+}
+
+// Response containing word count results
+message WordCountResult {
+  string chunk_id = 1;          // Original chunk ID
+  int64 total_words = 2;        // Total word count
+  int64 unique_words = 3;       // Number of unique words
+  map<string, int64> word_counts = 4;  // Individual word frequencies
+  double processing_time = 5;   // Time taken to process (seconds)
+  bool success = 6;             // Whether processing succeeded
+  string error_message = 7;     // Error message if failed
+}
+
+// Health check request
+message HealthRequest {
+  string client_id = 1;
+}
+
+// Health check response
+message HealthResponse {
+  bool healthy = 1;
+  string version = 2;
+  int64 processed_chunks = 3;
+  double uptime_seconds = 4;
+}
